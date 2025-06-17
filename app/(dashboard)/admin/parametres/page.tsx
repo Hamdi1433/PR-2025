@@ -1,0 +1,27 @@
+"use client"
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Settings } from "lucide-react"
+
+export default function AdminParametresPage() {
+  return (
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900">Paramètres Système</h1>
+        <p className="text-gray-600">Configurez les paramètres globaux du CRM</p>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center space-x-2">
+            <Settings className="h-5 w-5" />
+            <span>Configuration Générale</span>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p>Fonctionnalité en développement...</p>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
