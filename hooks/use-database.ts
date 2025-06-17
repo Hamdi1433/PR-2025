@@ -79,55 +79,9 @@ export function useDashboardStats(userId?: string) {
       setLoading(true)
       setError(null)
       const data = await databaseService.getDashboardStats(userId)
-
-      // Assurons-nous que toutes les propriétés existent
-      const safeData: DashboardStats = {
-        contacts: {
-          total: data.contacts?.total || 0,
-          prospects: data.contacts?.prospects || 0,
-          leads: data.contacts?.leads || 0,
-          clients: data.contacts?.clients || 0,
-          newThisMonth: data.contacts?.newThisMonth || 0,
-        },
-        contrats: {
-          total: data.contrats?.total || 0,
-          actifs: data.contrats?.actifs || 0,
-          revenue_mensuel: data.contrats?.revenue_mensuel || 0,
-          revenue_annuel: data.contrats?.revenue_annuel || 0,
-          commission_mensuelle: data.contrats?.commission_mensuelle || 0,
-          commission_annuelle: data.contrats?.commission_annuelle || 0,
-        },
-        propositions: {
-          total: data.propositions?.total || 0,
-          en_attente: data.propositions?.en_attente || 0,
-          acceptees: data.propositions?.acceptees || 0,
-          revenue: data.propositions?.revenue || 0,
-        },
-        taches: {
-          total: data.taches?.total || 0,
-          en_attente: data.taches?.en_attente || 0,
-          en_retard: data.taches?.en_retard || 0,
-        },
-      }
-
-      setStats(safeData)
+      setStats(data)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur lors du chargement des statistiques")
-
-      // En cas d'erreur, définir des statistiques par défaut
-      setStats({
-        contacts: { total: 0, prospects: 0, leads: 0, clients: 0, newThisMonth: 0 },
-        contrats: {
-          total: 0,
-          actifs: 0,
-          revenue_mensuel: 0,
-          revenue_annuel: 0,
-          commission_mensuelle: 0,
-          commission_annuelle: 0,
-        },
-        propositions: { total: 0, en_attente: 0, acceptees: 0, revenue: 0 },
-        taches: { total: 0, en_attente: 0, en_retard: 0 },
-      })
     } finally {
       setLoading(false)
     }

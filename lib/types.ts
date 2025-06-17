@@ -1,4 +1,4 @@
-// Types de base pour l'application CRM
+// Types de base pour l'application
 export interface User {
   id: string
   email: string
@@ -18,17 +18,9 @@ export interface Contact {
   telephone?: string
   entreprise?: string
   poste?: string
-  adresse?: string
-  ville: string
-  code_postal?: string
-  pays: string
   statut: "prospect" | "lead" | "client" | "inactif"
   score: number
-  origine: string
-  attribution?: string
-  cpl?: string // Coût par lead
-  date_creation: string
-  date_signature?: string
+  source: string
   notes?: string
   assigned_to?: string
   created_at: string
@@ -87,20 +79,20 @@ export interface Task {
 
 export interface Ticket {
   id: string
-  numero: string
-  sujet: string
+  number: string
+  subject: string
   description: string
-  type: "reclamation" | "demande_info" | "modification_contrat" | "resiliation" | "remboursement" | "technique"
-  priorite: "basse" | "normale" | "haute" | "urgente"
-  statut: "nouveau" | "en_cours" | "en_attente_client" | "resolu" | "ferme"
-  contact_id: string
-  contrat_id?: string
-  assigned_to?: string
-  created_at: string
-  first_response_at?: string
-  resolved_at?: string
-  closed_at?: string
-  canal: "email" | "telephone" | "chat" | "courrier" | "site_web"
+  type: "complaint" | "info_request" | "contract_modification" | "cancellation" | "refund" | "technical"
+  priority: "low" | "normal" | "high" | "urgent"
+  status: "new" | "in_progress" | "waiting_customer" | "resolved" | "closed"
+  contactId: string
+  contractId?: string
+  assignedTo?: string
+  createdAt: string
+  firstResponseAt?: string
+  resolvedAt?: string
+  closedAt?: string
+  channel: "email" | "phone" | "chat" | "mail" | "website"
   satisfaction?: number
 }
 
@@ -161,67 +153,22 @@ export interface DashboardStats {
     clients: number
     newThisMonth: number
   }
-  contrats: {
+  proposals: {
     total: number
-    actifs: number
-    revenue_mensuel: number
-    revenue_annuel: number
-    commission_mensuelle: number
-    commission_annuelle: number
-  }
-  propositions: {
-    total: number
-    en_attente: number
-    acceptees: number
+    pending: number
+    accepted: number
     revenue: number
   }
-  taches: {
+  contracts: {
     total: number
-    en_attente: number
-    en_retard: number
+    active: number
+    revenue: number
   }
-}
-
-// Types pour l'import
-export interface ImportResult {
-  success: number
-  errors: Array<{ row: number; error: string; data: any }>
-  duplicates: number
-}
-
-export interface ImportMapping {
-  [key: string]: string // Mapping des colonnes du fichier vers les champs de l'application
-}
-
-export interface Contrat {
-  id: string
-  numero_contrat: string
-  contact_id: string
-  compagnie: string
-  statut: "actif" | "suspendu" | "resilie" | "expire"
-  attribution?: string
-  pays: string
-
-  // Dates
-  date_signature: string
-  date_effet: string
-  date_fin?: string
-
-  // Montants
-  cotisation_mensuelle: number
-  cotisation_annuelle: number
-  commission_mensuelle: number
-  commission_annuelle: number
-  commission_annuelle_premiere_annee: number
-  annee_recurrente: number
-  annee_recue: number
-
-  // Coûts
-  charge?: number
-  depenses?: number
-
-  created_at: string
-  updated_at: string
+  tasks: {
+    total: number
+    pending: number
+    overdue: number
+  }
 }
 
 export interface Proposition {
@@ -234,6 +181,19 @@ export interface Proposition {
   date_envoi?: string
   date_reponse?: string
   created_by: string
+  created_at: string
+  updated_at: string
+}
+
+export interface Contrat {
+  id: string
+  proposition_id: string
+  contact_id: string
+  numero_contrat: string
+  montant_annuel: number
+  date_debut: string
+  date_fin?: string
+  statut: "actif" | "expire" | "resilie"
   created_at: string
   updated_at: string
 }

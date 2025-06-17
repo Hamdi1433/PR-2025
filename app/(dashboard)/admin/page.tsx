@@ -27,12 +27,6 @@ export default function AdminDashboard() {
     return <ErrorMessage message="Aucune donnée disponible" onRetry={refresh} />
   }
 
-  // Vérifier que toutes les propriétés nécessaires existent
-  const contactsStats = stats.contacts || { total: 0, newThisMonth: 0, prospects: 0, leads: 0, clients: 0 }
-  const contratsStats = stats.contrats || { total: 0, actifs: 0, revenue_annuel: 0 }
-  const propositionsStats = stats.propositions || { total: 0, pending: 0, en_attente: 0 }
-  const tachesStats = stats.taches || { pending: 0, en_attente: 0, overdue: 0, en_retard: 0 }
-
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -50,8 +44,8 @@ export default function AdminDashboard() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatsCard
           title="Total Contacts"
-          value={contactsStats.total.toLocaleString()}
-          description={`+${contactsStats.newThisMonth} ce mois`}
+          value={stats.contacts.total.toLocaleString()}
+          description={`+${stats.contacts.newThisMonth} ce mois`}
           icon={Users}
           trend={{
             value: 12,
@@ -62,8 +56,8 @@ export default function AdminDashboard() {
         />
         <StatsCard
           title="Propositions"
-          value={propositionsStats.total}
-          description={`${propositionsStats.en_attente || propositionsStats.pending} en attente`}
+          value={stats.proposals.total}
+          description={`${stats.proposals.pending} en attente`}
           icon={FileText}
           trend={{
             value: 8,
@@ -74,14 +68,14 @@ export default function AdminDashboard() {
         />
         <StatsCard
           title="Contrats Actifs"
-          value={contratsStats.actifs}
-          description={`${contratsStats.total} au total`}
+          value={stats.contracts.active}
+          description={`${stats.contracts.total} au total`}
           icon={Target}
           className="border-purple-200 bg-gradient-to-br from-purple-50 to-violet-50"
         />
         <StatsCard
           title="Chiffre d'Affaires"
-          value={`€${((contratsStats.revenue_annuel || 0) / 1000).toFixed(0)}K`}
+          value={`€${(stats.contracts.revenue / 1000).toFixed(0)}K`}
           description="Revenus annuels"
           icon={TrendingUp}
           trend={{
@@ -95,13 +89,13 @@ export default function AdminDashboard() {
 
       {/* Statistiques détaillées */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <StatsCard title="Prospects" value={contactsStats.prospects} icon={Users} className="border-blue-200" />
-        <StatsCard title="Leads" value={contactsStats.leads} icon={Target} className="border-purple-200" />
-        <StatsCard title="Clients" value={contactsStats.clients} icon={CheckSquare} className="border-green-200" />
+        <StatsCard title="Prospects" value={stats.contacts.prospects} icon={Users} className="border-blue-200" />
+        <StatsCard title="Leads" value={stats.contacts.leads} icon={Target} className="border-purple-200" />
+        <StatsCard title="Clients" value={stats.contacts.clients} icon={CheckSquare} className="border-green-200" />
         <StatsCard
           title="Tâches en cours"
-          value={tachesStats.en_attente || tachesStats.pending}
-          description={`${tachesStats.en_retard || tachesStats.overdue} en retard`}
+          value={stats.tasks.pending}
+          description={`${stats.tasks.overdue} en retard`}
           icon={CheckSquare}
           className="border-orange-200"
         />
